@@ -1,10 +1,10 @@
 SELECT *
-From CovidDeath
+From CovidData
 ORDER BY 3, 4
 ;
 
 SELECT location, date, total_cases, new_cases, total_deaths, population
-FROM CovidDeath
+FROM CovidData
 WHERE continent is not NULL
 order by 1, 2
 ;
@@ -102,8 +102,4 @@ select continent,  location, date, population, new_vaccinations
 from CovidData
 where continent is not null 
 --order by 2, 3
-;
-
-SELECT *
-FROM PercentPopulationVaccinated
 ;
