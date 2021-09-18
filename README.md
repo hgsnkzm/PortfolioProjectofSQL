@@ -10,15 +10,15 @@ This project uses following languages/tools
 I used data from [here](https://ourworldindata.org/coronavirus-source-data)
 ### colimn
 I mainly used following columns :
-`iso_code`	ISO 3166-1 alpha-3 – three-letter country codes
-`continent`	Continent of the geographical location
-`location`	Geographical location
-`date`	Date of observation
-`population`	Population in 2020
-`total_cases`	Total confirmed cases of COVID-19
-`new_cases`	New confirmed cases of COVID-19
-`total_deaths`	Total deaths attributed to COVID-19
-`new_deaths`	New deaths attributed to COVID-19
+* `iso_code`	ISO 3166-1 alpha-3 – three-letter country codes
+* `continent`	Continent of the geographical location
+* `location`	Geographical location
+* `date`	Date of observation
+* `population`	Population in 2020
+* `total_cases`	Total confirmed cases of COVID-19
+* `new_cases`	New confirmed cases of COVID-19
+* `total_deaths`	Total deaths attributed to COVID-19
+* `new_deaths`	New deaths attributed to COVID-19
 
 Details about datasets are [here](https://github.com/owid/covid-19-data/tree/master/public/data#data-on-covid-19-coronavirus-by-our-world-in-data)
 ## Data Visualization
