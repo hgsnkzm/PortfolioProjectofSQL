@@ -8,7 +8,7 @@ This project uses following languages/tools
 * Tableau
 ## Data
 I used data from [here](https://ourworldindata.org/coronavirus-source-data)
-### colimn
+### columns
 I mainly used following columns :
 * `iso_code`	ISO 3166-1 alpha-3 – three-letter country codes
 * `continent`	Continent of the geographical location
