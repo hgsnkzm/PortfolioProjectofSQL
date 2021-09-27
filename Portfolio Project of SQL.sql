@@ -1,95 +1,81 @@
-SELECT *
+-- 1. Looking at total cases vs total deaths in the world
+
+SELECT sum(new_cases) as total_cases, sum(new_deaths) as total_deaths, (sum(new_deaths)/sum(new_cases))*100 as DeathPercetage
 From CovidData
-ORDER BY 3, 4
+Where continent is not NULL
+Order by 1, 2
 ;
 
-SELECT location, date, total_cases, new_cases, total_deaths, population
-FROM CovidData
-WHERE continent is not NULL
-order by 1, 2
-;
-
--- Looking at toatl cases vs total deaths
---Shows liklihood of dying if you contract covid  your country
-
-SELECT location, date, total_deaths, total_cases, population, (total_deaths/total_cases)*100 as DeathPercentage
-FROM CovidData
-WHERE location LIKE "%states%"
-and continent is not NULL
-order by 1, 2
-;
 
 -- Looking at total cases vs population
+-- 
+-- SELECT location, date, total_cases, population, (total_cases/population)*100 as TotalCaesPercentage
+-- FROM CovidData
+-- WHERE location LIKE "Japan"
+-- and continent is not NULL
+-- order by 1, 2
+-- ;
 
-SELECT location, date, total_cases, population, (total_cases/population)*100 as TotalCaesPercentage
-FROM CovidData
-WHERE location LIKE "Japan"
-and continent is not NULL
-order by 1, 2
+-- 2. Looking at total deaths of each continent
+
+Select location, sum(new_deaths) as TotalDeathCount
+From CovidData
+Where continent is null And location not in ('World', 'European Union', 'International')
+Group by location
+Order by TotalDeathCount DESC
 ;
 
--- Looking at countries with the highest Infection Rate compared to Popylation
 
-SELECT location, date, MAX(total_cases), population, MAX((total_cases/population))*100 as PercentPopulationInfected
+-- 3. Looking at countries with the highest Infection Count compared to Population
+
+SELECT location, population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population))*100 as PercentPopulationInfected
 FROM CovidData
 WHERE continent is not NULL
-group by Location, population
+group by location, population
 order by PercentPopulationInfected DESC
 ;
 
--- Showing countries with highest death count per poppulation
 
-SELECT location, MAX(cast(total_deaths as int)) as TotalDeathCount, population, MAX((total_deaths/population))*100 as DeathperPopulation
+-- Showing countries with highest death count per poppulation
+-- 
+-- SELECT location, MAX(cast(total_deaths as int)) as TotalDeathCount, population, MAX((total_deaths/population))*100 as DeathperPopulation
+-- FROM CovidData
+-- WHERE continent is not NULL
+-- group by Location
+-- order by TotalDeathCount DESC
+-- ;
+
+-- 4. The transition of the highest infection count of each country
+
+Select location, population, date, Max(total_cases) as HighestInfectedCount, Max((total_cases/population))*100 as PercentPopulationInfected
+From CovidData
+Where continent is not Null
+Group by location, population, date
+Order by PercentPopulationInfected DESC
+;
+
+-- 5. Showing the running tottal of new deaths
+
+SELECT location, population, date, new_cases, sum(new_cases) OVER (PARTITION BY location ORDER BY location, date) as RunningTotalOfNewCases
+, new_deaths, sum(new_deaths) OVER (PARTITION BY location ORDER BY location, date) as RunningTotalOfNewDeaths
 FROM CovidData
 WHERE continent is not NULL
-group by Location
-order by TotalDeathCount DESC
+ORDER BY 1, 3
 ;
 
--- Breaking things down in continent
+-- 5-a. Showing percentage of running total of new deaths per population
 
-SELECT location, MAX(cast(total_deaths as int)) as TotalDeathCount, population, MAX((total_deaths/population))*100 as DeathperPopulation
-FROM CovidData
-WHERE continent is NULL
-group by location
-order by TotalDeathCount DESC
-;
-
--- Global Numbers
-
-SELECT date, sum(new_cases) as TotalCases, sum(new_deaths) as TotalDeaths,  (sum(new_deaths)/sum(new_cases))*100 as DeathPercentage
-FROM CovidData
-WHERE continent is not null
-group by date
-order by 1, 2
-;
-
-
--- Looking at total population vs vaccinations
--- Looking at running total of new vaccinations of each countries
-
-select continent,  location, date, population, new_vaccinations
-, sum(new_vaccinations) OVER (PARTITION BY location ORDER BY location, date) as RunningTottalOfNewVaccinations
---, (RunningTottalOfNewVaccinations/population)*100
-from CovidData
-where continent is not null 
-order by 2, 3
-;
-
--- Showing running total of new vaccinations per population by using CTE
-
-With PopvsVac (continent, location, date, population, new_vaccinations, RunningTottalOfNewVaccinations)
+WITH PercentRunningTotalofNewDeatshs (location, population, date, new_cases, RunningTotalOfNewCases, new_deaths, RunningTotalOfNewDeaths)
 as
 (
-select continent,  location, date, population, new_vaccinations
-, sum(new_vaccinations) OVER (PARTITION BY location ORDER BY location, date) as RunningTottalOfNewVaccinations
---, (RunningTottalOfNewVaccinations/population)*100
-from CovidData
-where continent is not null 
---order by 2, 3
+SELECT location, population, date, new_cases, sum(new_cases) OVER (PARTITION BY location ORDER BY location, date) as RunningTotalOfNewCases
+, new_deaths, sum(new_deaths) OVER (PARTITION BY location ORDER BY location, date) as RunningTotalOfNewDeaths
+FROM CovidData
+WHERE continent is not NULL
+-- ORDER BY 1, 3
 )
-SELECT *, (RunningTottalOfNewVaccinations/population)*100 as 
-FROM PopvsVac
+SELECT *, (RunningTotalOfNewCases/population)*100 as PercentRunningTotalOfNewCases, (RunningTotalOfNewDeaths/population)*100 as PercentRunningTotalOfNewDeaths
+From PercentRunningTotalofNewDeatshs
 ;
 
 
