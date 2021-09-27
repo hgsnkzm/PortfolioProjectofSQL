@@ -22,4 +22,4 @@ I mainly used following columns :
 
 Details about datasets are [here](https://github.com/owid/covid-19-data/tree/master/public/data#data-on-covid-19-coronavirus-by-our-world-in-data)
 ## Data Visualization
-Result Tableau visualization is [here](https://public.tableau.com/views/Covid-19Dashboard_9162021/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link)
+Result Tableau visualization is [here](https://public.tableau.com/views/Covid-19Dashboard_9122021/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link)
