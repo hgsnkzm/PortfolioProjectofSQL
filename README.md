@@ -5,7 +5,7 @@ Aiming to show trends or comparison of Covid-19 deaths data.
 ## Tools
 This project uses following languages/tools
 * DB Browser for SQLite Version 3.12.2
-* Tableau
+* Tableau Public
 
 ## Data
 I used data from [here](https://ourworldindata.org/coronavirus-source-data)
