@@ -4,9 +4,9 @@ Looking at global Covid-19 deaths data and comparing those numbers/percentages b
 Aiming to show trends or comparison of Covid-19 deaths data.
 ## Tools
 This project uses following languages/tools
-* SQL
+* DB Browser for SQLite Version 3.12.2
 * Tableau
-* SQLite
+
 ## Data
 I used data from [here](https://ourworldindata.org/coronavirus-source-data)
 ### columns
